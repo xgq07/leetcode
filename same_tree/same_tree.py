@@ -1,76 +1,47 @@
-# Definition for a binary tree node.
-class TreeNode:
-    def __init__(self, x):
-        self.val = x
+class BinaryTree():
+    def __init__(self, dataval):
+        super().__init__()
+        self.val = dataval
         self.left = None
         self.right = None
 
-
-class BinarySearchTree:
-    def __init__(self):
-        self._root = None
-
-    def find(self, value: int) -> Optional[TreeNode]:
-        node = self._root
-        while node and node.val != value:
-            node = node.left if node.val > value else node.right
-        return node
-
-    def insert(self, value: int):
-        if not self._root:
-            self._root = TreeNode(value)
-            return
-        parent = None
-        node = self._root
-        while node:
-            parent = node
-            node = node.left if node.val > value else node.right
-        new_node = TreeNode(value)
-        if parent.val > value:
-            parent.left = new_node
+    def append_left_node(self, val):
+        if self.left != None:
+            self.left.append_left_node(val)
         else:
-            parent.right = new_node
+            self.left = BinaryTree(val)
 
-    def delete(self, value: int):
-        node = self._root
-        parent = None
-        while node and node.val != value:
-            parent = node
-            node = node.left if node.val > value else node.right
-        if not node:
-            return
-
-        # 要删除的节点有两个子节点
-        if node.left and node.right:
-            successor = node.right
-            successor_parent = node
-            while successor.left:
-                successor_parent = successor
-                successor = successor.left
-            node.val = successor.val
-            parent, node = successor_parent, successor
-
-        # 删除节点是叶子节点或者仅有一个子节点
-        child = node.left if node.left else node.right
-        if not parent:
-            self._root = child
-        elif parent.left == node:
-            parent.left = child
+    def append_right_node(self, val):
+        if self.right != None:
+            self.right.append_right_node(val)
         else:
-            parent.right = child
+            self.right = BinaryTree(val)
+
 
 
 class Solution:
-    def isSameTree(self, p: TreeNode, q: TreeNode) -> bool:
-        pleft = p.left
-        if !self.contrasts(pleft, q.left):
-            return False
-
-        while pleft != None:
-            pleft = p.left
-
-    def contrasts(self, a, b):
-        if a != b:
-            return False
-        else:
+    def isSameTree(self, p, q):
+        if p is None and q is None:
             return True
+
+        if p is None or q is None:
+            return False
+
+        print(f"b1.Val:{p.val}, b2.Val:{q.val}")
+        if p.val != q.val:
+            return False
+        
+        return self.isSameTree(p.left, q.left) and \
+            self.isSameTree(p.right, q.right)
+
+
+if __name__ == "__main__":
+    b1 = BinaryTree(1)
+    b2 = BinaryTree(1)
+    b1.append_left_node(2)
+    b2.append_left_node(2)
+    b1.append_right_node(3)
+    b2.append_right_node(3)
+   
+    s = Solution()
+    print(s.isSameTree(b1, b2))
