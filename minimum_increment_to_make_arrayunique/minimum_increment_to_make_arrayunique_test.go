@@ -6,29 +6,31 @@ import (
 	"testing"
 )
 
+// 得到使数组唯一的最小增量
 func minIncrementForUnique(A []int) int {
 	sort.Ints(A)
-	res := 0
+	res := 0 
 	for i := 0 ; i < len(A)-1 ; i++{
-		curr := i
-		next := i+1
+		curr := i  
+		next := i+1 
 		if A[curr] >= A[next]{
-			temp := A[next]
+			temp := A[next]  
 			A[next] = A[curr]+1
 			res += A[next] - temp
 		}
 	}
 	return res
 }
-
-func Test_minIncrementForUnique(t *testing.T){
-	var A = []int{1,2,2}
+ 
+func Test_minIncr em entForUnique(t *testing.T){
+	var A = []int{1,2,2} 
 	if minIncrementForUnique(A) != 1{
 		t.Fail()
-	}
-	A = []int{3,2,1,2,1,7}
+	}     
+	A = []int{3,2,1,2,1,7} 
 	if minIncrementForUnique(A) != 6{
 		t.Fail()
 	}
 	fmt.Println("test")
+
 }
